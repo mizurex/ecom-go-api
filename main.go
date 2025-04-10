@@ -14,6 +14,7 @@ func main() {
 	handler.SetDB(db)
 	router := gin.Default()
 	router.POST("/user", handler.AddUserHandler)
+	router.DELETE("/user/:id", handler.DeleteUserHandler)
 	router.Run("localhost:9090")
 
 }

@@ -5,6 +5,7 @@ import (
 	"ecom/database"
 	"ecom/models"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -29,4 +30,23 @@ func AddUserHandler(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "user added successfully!"})
 
+}
+
+func DeleteUserHandler(c *gin.Context) {
+
+	idParam := c.Param("id")
+
+	id, err := strconv.Atoi(idParam)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
+		return
+	}
+
+	if err := database.DeleteUser(DB, id); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete user"})
+		return
+
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "User deleted successfully!"})
 }
